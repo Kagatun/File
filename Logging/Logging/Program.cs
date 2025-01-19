@@ -6,9 +6,9 @@
         {
             Pathfinder pathfinder = new Pathfinder(new FileLogger());
             Pathfinder pathfinder1 = new Pathfinder(new ConsoleLogger());
-            Pathfinder pathfinder2 = new Pathfinder(new FridayFileLogger());
+            Pathfinder pathfinder2 = new Pathfinder(new FridayLogger(new FileLogger()));
             Pathfinder pathfinder3 = new Pathfinder(new FridayLogger(new ConsoleLogger()));
-            Pathfinder pathfinder4 = new Pathfinder(new FridayConsoleFileLogger(new List<ILogger> { new ConsoleLogger(), new FridayFileLogger() }));
+            Pathfinder pathfinder4 = new Pathfinder(new FridayConsoleFileLogger(new ConsoleLogger(), new FileLogger()));
 
             pathfinder.Find("Логирует сообщения в файл.");
             pathfinder1.Find("Логирует сообщения в консоль.");
@@ -28,7 +28,7 @@
         private readonly string _nameFile = "log.txt";
 
         public void WriteError(string text) =>
-            File.WriteAllText(_nameFile, text);
+            File.AppendAllText(_nameFile, text + Environment.NewLine);
     }
 
     public class ConsoleLogger : ILogger
@@ -37,60 +37,39 @@
             Console.WriteLine(text);
     }
 
-    public class FridayFileLogger : ILogger
-    {
-        private readonly string _nameFile = "log.txt";
-
-        public void WriteError(string text)
-        {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
-                File.WriteAllText(_nameFile, text);
-        }
-    }
-
     public class FridayLogger : ILogger
     {
         private readonly ILogger _logger;
-        private readonly string _nameFile = "log.txt";
-
 
         public FridayLogger(ILogger logger)
         {
-            if(logger == null)
-                throw new NullReferenceException();
-
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void WriteError(string text)
         {
             if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
-                File.WriteAllText(_nameFile, text);
+                _logger.WriteError(text);
         }
     }
 
     public class FridayConsoleFileLogger : ILogger
     {
-        private readonly List<ILogger> _loggers;
-        private readonly string _nameFile = "log.txt";
+        private readonly ILogger _consoleLogger;
+        private readonly ILogger _fileLogger;
 
-        public FridayConsoleFileLogger(List<ILogger> loggers)
+        public FridayConsoleFileLogger(ILogger consoleLogger, ILogger fileLogger)
         {
-            if (loggers == null)
-                throw new NullReferenceException();
-
-            _loggers = loggers;
+            _consoleLogger = consoleLogger ?? throw new ArgumentNullException(nameof(consoleLogger));
+            _fileLogger = fileLogger ?? throw new ArgumentNullException(nameof(fileLogger));
         }
 
         public void WriteError(string text)
         {
-            foreach (var logger in _loggers)
-            {
-                if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
-                    File.WriteAllText(_nameFile, text);
+            _consoleLogger.WriteError(text);
 
-                Console.WriteLine(text);
-            }
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+                _fileLogger.WriteError(text);
         }
     }
 
@@ -100,14 +79,10 @@
 
         public Pathfinder(ILogger logger)
         {
-            if (logger == null)
-                throw new NullReferenceException();
-
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void Find(string text) =>
             _logger.WriteError(text);
     }
 }
-
