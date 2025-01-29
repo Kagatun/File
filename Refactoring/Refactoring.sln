@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35617.110 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grouping fields", "Grouping fields\Grouping fields.csproj", "{DA8F34A3-1FB7-42C7-A989-2E9CB35D7632}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refactoring", "Refactoring\Refactoring.csproj", "{F1615CF0-88CF-4398-90FA-4E8F37386642}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DA8F34A3-1FB7-42C7-A989-2E9CB35D7632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA8F34A3-1FB7-42C7-A989-2E9CB35D7632}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA8F34A3-1FB7-42C7-A989-2E9CB35D7632}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA8F34A3-1FB7-42C7-A989-2E9CB35D7632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1615CF0-88CF-4398-90FA-4E8F37386642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1615CF0-88CF-4398-90FA-4E8F37386642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1615CF0-88CF-4398-90FA-4E8F37386642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1615CF0-88CF-4398-90FA-4E8F37386642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1B2A3900-C94D-4BF8-9B1F-2A84BB6B7C7E}
+		SolutionGuid = {4B394D86-873D-4479-BAEE-BE200DD82AA3}
 	EndGlobalSection
 EndGlobal
