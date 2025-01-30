@@ -4,18 +4,37 @@
     {
         static void Main(string[] args)
         {
-            var paymentHandler = new PaymentHandler(new PaymentSystemFactory());
-            var orderForm = new OrderForm();
+            var paymentSystemFactories = new Dictionary<string, IPaymentSystemFactory>
+            {
+                { "QIWI", new QIWIPaymentSystemFactory() },
+                { "WebMoney", new WebMoneyPaymentSystemFactory() },
+                { "Card", new CardPaymentSystemFactory() }
+            };
+
+            var orderForm = new OrderForm(paymentSystemFactories.Keys);
 
             string systemId = orderForm.ShowForm();
 
-            paymentHandler.ProcessPayment(systemId);
+            if (paymentSystemFactories.TryGetValue(systemId, out var paymentSystemFactory))
+            {
+                var paymentHandler = new PaymentHandler(paymentSystemFactory);
+                paymentHandler.ProcessPayment();
+            }
+            else
+            {
+                throw new ArgumentException("Платежная система не найдена.");
+            }
         }
     }
 
     public interface IPaymentSystem
     {
         void ProcessPayment();
+    }
+
+    public interface IPaymentSystemFactory
+    {
+        IPaymentSystem CreatePaymentSystem();
     }
 
     public class QIWI : IPaymentSystem
@@ -45,53 +64,52 @@
         }
     }
 
-    public class PaymentSystemFactory
+    public class QIWIPaymentSystemFactory : IPaymentSystemFactory
     {
-        private readonly Dictionary<string, Func<IPaymentSystem>> _paymentSystems;
+        public IPaymentSystem CreatePaymentSystem() =>
+             new QIWI();
+    }
 
-        public PaymentSystemFactory()
-        {
-            _paymentSystems = new Dictionary<string, Func<IPaymentSystem>>
-            {
-                { "QIWI", () => new QIWI() },
-                { "WebMoney", () => new WebMoney() },
-                { "Card", () => new Card() }
-            };
-        }
+    public class WebMoneyPaymentSystemFactory : IPaymentSystemFactory
+    {
+        public IPaymentSystem CreatePaymentSystem() =>
+             new WebMoney();
+    }
 
-        public IPaymentSystem CreatePaymentSystem(string systemId)
-        {
-            if (_paymentSystems.TryGetValue(systemId, out var paymentSystemCreator))
-                return paymentSystemCreator();
-
-            throw new ArgumentException($"Платежная система {systemId} не найдена.");
-        }
+    public class CardPaymentSystemFactory : IPaymentSystemFactory
+    {
+        public IPaymentSystem CreatePaymentSystem() =>
+             new Card();
     }
 
     public class PaymentHandler
     {
-        private readonly PaymentSystemFactory _paymentSystemFactory;
+        private readonly IPaymentSystem _paymentSystem;
 
-        public PaymentHandler(PaymentSystemFactory paymentSystemFactory)
+        public PaymentHandler(IPaymentSystemFactory paymentSystemFactory)
         {
-            _paymentSystemFactory = paymentSystemFactory;
+            _paymentSystem = paymentSystemFactory.CreatePaymentSystem();
         }
 
-        public void ProcessPayment(string systemId)
+        public void ProcessPayment()
         {
-            IPaymentSystem paymentSystem = _paymentSystemFactory.CreatePaymentSystem(systemId);
-            paymentSystem.ProcessPayment();
-
-            Console.WriteLine($"Вы оплатили с помощью {systemId}");
+            _paymentSystem.ProcessPayment();
             Console.WriteLine("Оплата прошла успешно!");
         }
     }
 
     public class OrderForm
     {
+        private readonly IEnumerable<string> _availablePaymentSystems;
+
+        public OrderForm(IEnumerable<string> availablePaymentSystems)
+        {
+            _availablePaymentSystems = availablePaymentSystems;
+        }
+
         public string ShowForm()
         {
-            Console.WriteLine("Мы принимаем: QIWI, WebMoney, Card");
+            Console.WriteLine("Мы принимаем: " + string.Join(", ", _availablePaymentSystems));
             Console.WriteLine("Какой системой вы хотите совершить оплату?");
 
             string input = Console.ReadLine();
