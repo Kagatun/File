@@ -13,7 +13,7 @@
             uint planetAge;
             ulong starAge;
             double jumpHeight;
-            bool isLive;
+            bool isDead;
         }
     }
 }
