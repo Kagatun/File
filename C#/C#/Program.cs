@@ -10,7 +10,7 @@
             ushort parkingPlaces;
             float startOfMovement;
             short bankAccount;
-            uint planetAge;
+            bool isLive;
             ulong starAge;
             double jumpHeight;
             long yearOfHistory;
