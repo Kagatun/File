@@ -13,7 +13,7 @@
             uint planetAge;
             ulong starAge;
             double jumpHeight;
-            long yearOfHistory;
+            bool isLive;
         }
     }
 }
