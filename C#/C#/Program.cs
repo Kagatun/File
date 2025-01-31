@@ -5,12 +5,12 @@
         static void Main(string[] args)
         {
             int hitPointHero;
-            byte apartmentsInTheHallway;
+            byte numberBullets;
             string greeting;
             ushort parkingPlaces;
             float startOfMovement;
             short bankAccount;
-            bool isLive;
+            uint planetAge;
             ulong starAge;
             double jumpHeight;
             long yearOfHistory;
