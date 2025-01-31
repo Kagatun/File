@@ -1,16 +1,25 @@
-﻿class Program
+﻿namespace ConsoleApp5
 {
-    static void Main(string[] args)
+    class Program
     {
-        string name = "Ivanov";
-        string surname = "Ivan";
+        static void Main(string[] args)
+        {
+            int waitingTime = 10;
+            int totalMinutes;
+            int minutesPerHour = 60;
+            int hoursOfWaiting;
+            int minutesOfWaiting;
+            int numberOfPatients;
 
-        Console.WriteLine(surname + " " + name);
+            Console.Write("Введите колличество пациентов:");
+            numberOfPatients = Convert.ToInt32(Console.ReadLine());
 
-        string correctName = surname;
-        surname = name;
-        name = correctName;
+            totalMinutes = (numberOfPatients * waitingTime);
+            hoursOfWaiting = (totalMinutes / minutesPerHour);
+            minutesOfWaiting = (totalMinutes % minutesPerHour);
 
-        Console.WriteLine(surname + " " + name);
+            Console.WriteLine("Вам осталось ждать до своей очереди " + hoursOfWaiting + " часов и " + minutesOfWaiting + " минут.");
+        }
     }
 }
+
