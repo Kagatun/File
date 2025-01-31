@@ -1,22 +1,22 @@
-﻿namespace ConsoleApp1
+﻿class Program
 {
-    public class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Как вас зовут?");
-            string name = Console.ReadLine();
+        string name = "Ivanov";
+        string surname = "Ivan";
+        string firstCup = "Tea";
+        string secondCup = "Coffee";
 
-            Console.WriteLine("Сколько Вам лет?");
-            string age = Console.ReadLine();
+        Console.WriteLine(surname + " " + name + "\n" + firstCup + " " + secondCup);
 
-            Console.WriteLine("Ваш знак зодиака?");
-            string zodiac = Console.ReadLine();
+        string correctName = "Ivan";
+        string tempCup = "Coffee";
 
-            Console.WriteLine("Где вы работаете?");
-            string work = Console.ReadLine();
+        surname = name;
+        name = correctName;
+        secondCup = firstCup;
+        firstCup = tempCup;
 
-            Console.WriteLine("Вас зовут " + name + ", Вам " + age + " лет," + " Ваш знак зодиака " + zodiac + ", Вы работаете на(в) " + work + ".");
-        }
+        Console.WriteLine(surname + " " + name + "\n" + firstCup + " " + secondCup);
     }
 }
